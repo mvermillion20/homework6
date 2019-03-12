@@ -1,0 +1,81 @@
+---
+title: "Homework5"
+author: "Monica Vermillion"
+date: "March 11, 2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+## Question 1 
+
+Stan code that is relevant to my research: https://discourse.mc-stan.org/t/indexing-approach-to-predictors/7898 
+
+This program looks at model where the intercepts of the binomial regression depends on the value of corresponding index value of the same observation. This could be useful for me if trying to determine if cheatgrass is present or not in a specific plot and having my bionimal regression dependant on my current observationa and my remote sensing data. 
+
+
+## Question 2
+
+Choice 2: "The Garden of Forking Paths" Why has the phrase "Garden of the Forking Paths" become so important and widespread in modern statistics? 
+
+The garden of forking paths has become such a common phrase because it consideres all possible paths or outcomes with previous outcomes included. The "paths" are giant decision trees where each layer has a probability. While only one path is chosen the likelyhood of that path can determine what the most likely hypothesis is for the data. So while we may have a conjecture about the data the paths 
+
+
+## Question 3 
+```{r cars}
+#Question 3
+p_earth <- 0.3 #30% land 
+p_mars <- 1.0 #100% land 
+
+post_prob <- (p_earth)/(p_earth+p_mars) 
+
+print(post_prob)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+#Question 4 
+#Conjectures: 
+# Spcies A: gives birth to twins 10% of the time 
+# Species B: gives birth to twins 20% of the time 
+# Ways of producing twins given each conjecture
+a_twin <-  .10 # Prob of species A having twins
+b_twin <-  .20 # Prob of species B having tiwns 
+# (a) p(A) # Finding the prob the panda we have is from A, given an observation of twins 
+p_a <- a_twin/(a_twin+b_twin)*100
+#print('There is a' +(p_a)+'% Chance the species is a')
+
+# (b) now we must update our new count given the second observation: 
+# Ways to produce a single inface 
+a_singl <- 0.9 #ways to produce A
+b_singl <- 0.8 #ways to produce B 
+
+# Now p_a from (a) is our prior 
+#New count = ways to produce * prior 
+
+post_prob_a <- ((a_singl)*(1-a_singl))/((a_singl)*(1-a_singl)+(b_singl)*(1-b_singl))
+print(post_prob_a*100)
+
+#(c) Vet test where prob(a) = 0.8 and prob(B) = 0.65 
+
+#Calculation ignorning pervious information 
+
+post_prob_vetA <- (0.8)/(0.8+(1-0.65))
+print(post_prob_vetA)
+
+#Calculation considering the known information already
+#P(species a| testA observed and infants observed) Prob that it's species A|observed positive A result from Test 
+#Bayes Thm: P(TestA|SpeciesA) Prob that the panda is Species A given the test is postivie for species A
+# = P(SpeciesA|TestA)P(SpeciesA piror)/P(TestingA total)
+# What is the probability that Species A is actually species A given that it tested positive for species A test and has a 36% chance of being species A from birth data 
+pob_speciesA_testA <- (0.8*(post_prob_a))/(0.8+0.35)
+
+print(pob_speciesA_testA)
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
